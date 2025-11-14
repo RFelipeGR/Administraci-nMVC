@@ -1,0 +1,28 @@
+{% extends "administracion/base.html" %}
+{% block content %}
+
+<h1>Reservas</h1>
+
+<a href="/panel/reservas/nuevo/">Crear Reserva</a>
+
+<table border="1">
+    <tr>
+        <th>Pasajero</th>
+        <th>Cédula</th>
+        <th>Bus</th>
+        <th>Fecha Viaje</th>
+        <th>Asiento</th>
+    </tr>
+
+    {% for r in object_list %}
+    <tr>
+        <td>{{ r.pasajero_nombre }}</td>
+        <td>{{ r.pasajero_cedula }}</td>
+        <td>{{ r.bus.placa }}</td>
+        <td>{{ r.fecha_viaje }}</td>
+        <td>{{ r.asiento }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

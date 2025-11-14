@@ -1,0 +1,25 @@
+{% extends "administracion/base.html" %}
+
+{% block content %}
+<h1>Listado de Buses</h1>
+
+<a href="/panel/buses/nuevo/">Crear Bus</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Cooperativa</th>
+        <th>Placa</th>
+        <th>Capacidad</th>
+    </tr>
+
+    {% for bus in object_list %}
+    <tr>
+        <td>{{ bus.id }}</td>
+        <td>{{ bus.cooperativa.nombre }}</td>
+        <td>{{ bus.placa }}</td>
+        <td>{{ bus.capacidad }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

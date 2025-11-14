@@ -1,0 +1,65 @@
+{% extends "administracion/base.html" %}
+{% block content %}
+
+<h1>Crear Reserva</h1>
+
+{% if form.errors %}
+<div style="color:red">
+    {{ form.errors }}
+</div>
+{% endif %}
+
+<form method="post" id="reserva-form">
+    {% csrf_token %}
+
+    <label>Cooperativa:</label>
+    <select id="id_cooperativa">
+        <option value="">---------</option>
+        {% for coop in cooperativas %}
+        <option value="{{ coop.id }}">{{ coop.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Bus:</label>
+    <select name="bus" id="id_bus">
+        <option value="">---------</option>
+    </select>
+
+    {{ form.pasajero_nombre.label_tag }} {{ form.pasajero_nombre }}
+    {{ form.pasajero_cedula.label_tag }} {{ form.pasajero_cedula }}
+    {{ form.fecha_viaje.label_tag }} {{ form.fecha_viaje }}
+    {{ form.asiento.label_tag }} {{ form.asiento }}
+
+    {% if form.non_field_errors %}
+    <div>{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <button type="submit">Guardar</button>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cooperativaSelect = document.getElementById('id_cooperativa');
+    const busSelect = document.getElementById('id_bus');
+
+    cooperativaSelect.addEventListener('change', function() {
+        const coopId = this.value;
+        busSelect.innerHTML = '<option value="">---------</option>';
+
+        if (!coopId) return;
+
+        fetch(`/panel/api/buses/?cooperativa_id=${coopId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.buses.forEach(bus => {
+                    const option = document.createElement('option');
+                    option.value = bus.id;
+                    option.textContent = bus.texto;
+                    busSelect.appendChild(option);
+                });
+            });
+    });
+});
+</script>
+
+{% endblock %}
